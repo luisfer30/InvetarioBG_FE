@@ -1,10 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef,Component,OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import {
-  Product,
-  ProductsService
-} from '../../services/products';
+import {Product,ProductsService} from '../../services/products';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-products',
@@ -19,9 +16,23 @@ export class Products implements OnInit {
   loading = false;
   errorMessage = '';
 
-  constructor(
-    private productsService: ProductsService
-  ) {}
+constructor(
+  private productsService: ProductsService,
+  private cdr: ChangeDetectorRef,
+  private router: Router
+) {}
+
+newProduct(): void {
+  this.router.navigate(['/products/new']);
+}
+
+editProduct(id: number): void {
+  this.router.navigate(['/products/edit', id]);
+}
+
+deleteProduct(id: number): void {
+  console.log('Eliminar producto:', id);
+}
 
   ngOnInit(): void {
     this.loadProducts();
@@ -36,15 +47,23 @@ export class Products implements OnInit {
       .getProducts()
       .subscribe({
         next: response => {
+
           this.products = response.data;
           this.loading = false;
+
+          this.cdr.markForCheck();
         },
 
         error: error => {
+
           console.error(error);
 
-          this.errorMessage = 'No fue posible cargar los productos.';
+          this.errorMessage =
+            'No fue posible cargar los productos.';
+
           this.loading = false;
+
+          this.cdr.markForCheck();
         }
       });
   }
