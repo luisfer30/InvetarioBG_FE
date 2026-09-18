@@ -1,192 +1,166 @@
 <div class="container py-4">
-
-  <div class="d-flex justify-content-between align-items-center mb-4">
+  <!-- ENCABEZADO -->
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
     <div>
       <h2 class="fw-bold mb-0">Productos</h2>
-      <small class="text-muted">Gestión de inventario</small>
+
+      <small class="text-muted"> Gestión de inventario </small>
     </div>
 
-    <button
-      class="btn btn-primary"
-      (click)="newProduct()"
-    >
-      Nuevo producto
-    </button>
+    <button class="btn btn-primary" (click)="newProduct()">Nuevo producto</button>
+
+    <button class="btn btn-outline-danger" (click)="logout()">Cerrar sesión</button>
   </div>
 
-  <div
-    *ngIf="loading"
-    class="alert alert-info"
-  >
-    Cargando productos...
-  </div>
+  <!-- MENSAJE CARGANDO PRODUCTOS -->
+  <div *ngIf="loading" class="alert alert-info">Cargando productos...</div>
 
-  <div
-    *ngIf="errorMessage"
-    class="alert alert-danger"
-  >
-    {{ errorMessage }}
-  </div>
+  <!-- MENSAJE DE ERROR -->
+  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
 
+  <!-- LISTADO DE PRODUCTOS -->
   <div class="card shadow-sm border-0">
-
     <div class="card-body">
-
       <div class="table-responsive">
-
         <table class="table table-hover align-middle">
-
           <thead>
             <tr>
               <th>ID</th>
               <th>Nombre</th>
               <th>Modelo</th>
-              <!-- <th>Categoría</th>
-              <th>Marca</th> -->
+
               <th class="text-end">Acciones</th>
             </tr>
           </thead>
 
           <tbody>
-
             <tr *ngFor="let product of products">
-
               <td>{{ product.id }}</td>
 
               <td>{{ product.nombre }}</td>
 
               <td>{{ product.modelo }}</td>
 
-              <!-- <td>{{ product.categoriaId }}</td>
-
-              <td>{{ product.marcaId }}</td> -->
-
               <td class="text-end">
-                <button
-  class="btn btn-sm btn-outline-secondary me-2"
-  (click)="viewStock(product.id)"
->
-  Ver stock
-</button>
-                <button
-                  class="btn btn-sm btn-outline-primary me-2"
-                  (click)="editProduct(product.id)"
-                >
-                  Editar
-                </button>
+                <div class="d-flex flex-wrap justify-content-end gap-2">
+                  <button class="btn btn-sm btn-outline-secondary" (click)="viewStock(product.id)">Ver stock</button>
 
-                <button
-                  class="btn btn-sm btn-outline-danger"
-                  (click)="deleteProduct(product.id)"
-                >
-                  Eliminar
-                </button>
+                  <button class="btn btn-sm btn-outline-primary" (click)="editProduct(product.id)">Editar</button>
 
+                  <button class="btn btn-sm btn-outline-danger" (click)="deleteProduct(product.id)">Eliminar</button>
+                </div>
               </td>
-
             </tr>
 
             <tr *ngIf="!loading && products.length === 0">
-
-              <td
-                colspan="6"
-                class="text-center text-muted py-4"
-              >
-                No existen productos registrados.
-              </td>
-
+              <td colspan="4" class="text-center text-muted py-4">No existen productos registrados.</td>
             </tr>
-
           </tbody>
-
         </table>
-<div
-  *ngIf="selectedProductId !== null"
-  class="card shadow-sm border-0 mt-4"
->
-
-  <div class="card-body">
-
-    <div class="d-flex justify-content-between align-items-center mb-3">
-
-      <h4 class="mb-0">
-        Stock por proveedor
-      </h4>
-
-      <button
-        class="btn btn-sm btn-outline-secondary"
-        (click)="closeStock()"
-      >
-        Cerrar
-      </button>
-
-    </div>
-
-    <div
-      *ngIf="loadingStock"
-      class="alert alert-info"
-    >
-      Cargando stock...
-    </div>
-
-    <div
-      *ngIf="!loadingStock && selectedProductStock.length === 0"
-      class="alert alert-secondary"
-    >
-      Este producto no tiene stock registrado.
-    </div>
-
-    <div
-      *ngIf="!loadingStock && selectedProductStock.length > 0"
-      class="table-responsive"
-    >
-
-      <table class="table table-bordered align-middle">
-
-        <thead>
-          <tr>
-            <th>Producto</th>
-            <th>Proveedor</th>
-            <th>Precio unitario</th>
-            <th>Cantidad</th>
-          </tr>
-        </thead>
-
-        <tbody>
-
-          <tr *ngFor="let item of selectedProductStock">
-
-            <td>
-              {{ item.producto }}
-            </td>
-
-            <td>
-              {{ item.proveedor }}
-            </td>
-
-            <td>
-              {{ item.precioUnitario | currency }}
-            </td>
-
-            <td>
-              {{ item.cantidad }}
-            </td>
-
-          </tr>
-
-        </tbody>
-
-      </table>
-
-    </div>
-
-  </div>
-
-</div>
       </div>
 
+      <!-- STOCK DEL PRODUCTO SELECCIONADO -->
+      <div *ngIf="selectedProductId !== null" class="card bg-light border-0 mt-4">
+        <div class="card-body">
+          <!-- ENCABEZADO STOCK -->
+          <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-3">
+            <h4 class="mb-0">Stock por proveedor</h4>
+
+            <div class="d-flex flex-wrap gap-2">
+              <button class="btn btn-sm btn-primary me-2" (click)="openStockForm()">Agregar stock</button>
+
+              <button class="btn btn-sm btn-outline-secondary" (click)="closeStock()">Cerrar</button>
+            </div>
+          </div>
+
+          <!-- FORMULARIO AGREGAR STOCK -->
+          <div *ngIf="showStockForm" class="card border mb-4">
+            <div class="card-body">
+              <h5 class="mb-3">Registrar stock</h5>
+
+              <div class="row">
+                <!-- PROVEEDOR -->
+                <div class="col-md-4 mb-3">
+                  <label class="form-label"> Proveedor </label>
+
+                  <select class="form-select" [(ngModel)]="newStock.proveedorId">
+                    <option [ngValue]="0">Seleccione un proveedor</option>
+
+                    <option *ngFor="let provider of providers" [ngValue]="provider.id">{{ provider.razonSocial }}</option>
+                  </select>
+                </div>
+
+                <!-- PRECIO -->
+                <div class="col-md-4 mb-3">
+                  <label class="form-label"> Precio unitario </label>
+
+                  <input type="number" class="form-control" [(ngModel)]="newStock.precioUnitario" min="0" step="0.01" />
+                </div>
+
+                <!-- CANTIDAD -->
+                <div class="col-md-4 mb-3">
+                  <label class="form-label"> Cantidad </label>
+
+                  <input type="number" class="form-control" [(ngModel)]="newStock.cantidad" min="0" />
+                </div>
+              </div>
+
+              <!-- BOTONES FORMULARIO -->
+              <div class="d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-outline-secondary" (click)="cancelStockForm()">Cancelar</button>
+
+                <button type="button" class="btn btn-primary" (click)="saveStock()" [disabled]="loadingStock">
+                  {{ loadingStock ? 'Guardando...' : 'Guardar stock' }}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- CARGANDO STOCK -->
+          <div *ngIf="loadingStock && !showStockForm" class="alert alert-info">Cargando stock...</div>
+
+          <!-- PRODUCTO SIN STOCK -->
+          <div
+            *ngIf="
+              !loadingStock &&
+              !showStockForm &&
+              selectedProductStock.length === 0
+            "
+            class="alert alert-secondary"
+          >
+            Este producto no tiene stock registrado.
+          </div>
+
+          <!-- TABLA STOCK -->
+          <div *ngIf="!loadingStock && selectedProductStock.length > 0 " class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+              <thead>
+                <tr>
+                  <th>Producto</th>
+
+                  <th>Proveedor</th>
+
+                  <th>Precio unitario</th>
+
+                  <th>Cantidad</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor="let item of selectedProductStock">
+                  <td>{{ item.producto }}</td>
+
+                  <td>{{ item.proveedor }}</td>
+
+                  <td>{{ item.precioUnitario | currency }}</td>
+
+                  <td>{{ item.cantidad }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
-
   </div>
-
 </div>

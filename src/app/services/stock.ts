@@ -10,6 +10,12 @@ export interface StockItem {
   precioUnitario: number;
   cantidad: number;
 }
+export interface StockCreate {
+  productoId: number;
+  proveedorId: number;
+  precioUnitario: number;
+  cantidad: number;
+}
 
 interface ApiResponse<T> {
   success: boolean;
@@ -18,17 +24,17 @@ interface ApiResponse<T> {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class StockService {
-
   private apiUrl = 'https://localhost:7213/api/stock';
 
   constructor(private http: HttpClient) {}
 
   getStock(): Observable<ApiResponse<StockItem[]>> {
-    return this.http.get<ApiResponse<StockItem[]>>(
-      `${this.apiUrl}/list`
-    );
+    return this.http.get<ApiResponse<StockItem[]>>(`${this.apiUrl}/list`);
+  }
+  addStock(stock: StockCreate): Observable<ApiResponse<StockItem>> {
+    return this.http.post<ApiResponse<StockItem>>(`${this.apiUrl}/add`, stock);
   }
 }

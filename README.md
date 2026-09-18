@@ -1,59 +1,71 @@
-# InventoryFrontend
+# Inventory Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.8.
+Aplicación web desarrollada en **Angular** para la gestión de inventario.
 
-## Development server
+El frontend consume una API REST desarrollada en ASP.NET Core.
 
-To start a local development server, run:
+---
 
-```bash
-ng serve
+## Tecnologías
+
+- Angular
+- TypeScript
+- Bootstrap
+- HttpClient
+- Angular Router
+- JWT
+
+---
+
+## Funcionalidades
+
+La aplicación permite:
+
+- Inicio de sesión.
+- Almacenamiento del JWT.
+- Protección de rutas mediante Auth Guard.
+- Envío automático del JWT mediante HTTP Interceptor.
+- Listado de productos.
+- Registro de productos.
+- Edición de productos.
+- Eliminación de productos.
+- Consulta de stock por producto.
+- Visualización de precio por proveedor.
+- Visualización de cantidad por proveedor.
+- Registro de stock.
+- Selección de proveedores.
+- Cierre de sesión.
+- Manejo visual de errores.
+- Diseño responsive.
+
+---
+
+## Estructura
+
+```text
+src/app
+|
+|-- pages
+|   |
+|   |-- login
+|   |-- products
+|   |-- product-form
+|
+|-- services
+|   |
+|   |-- auth.ts
+|   |-- products.ts
+|   |-- stock.ts
+|   |-- providers.ts
+|
+|-- guards
+|   |
+|   |-- auth.guard.ts
+|
+|-- interceptors
+|   |
+|   |-- auth.interceptor.ts
+|
+|-- app.routes.ts
+|-- app.config.ts
 ```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

@@ -8,30 +8,30 @@ import { ProductForm } from './pages/product-form/product-form';
 export const routes: Routes = [
   {
     path: 'login',
-    component: Login
+    component: Login,
   },
   {
     path: 'products',
     component: Products,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
   },
   {
-  path: 'products/edit/:id',
-  component: ProductForm,
-  canActivate: [authGuard]
+    path: 'products/edit/:id',
+    component: ProductForm,
+    canActivate: [authGuard],
   },
   {
     path: 'products/new',
     component: ProductForm,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
   },
   {
     path: '',
     redirectTo: 'login',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: '**',
-    redirectTo: 'login'
-  }
+    redirectTo: 'login',
+  },
 ];

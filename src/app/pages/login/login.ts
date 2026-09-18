@@ -7,15 +7,11 @@ import { AuthService, LoginResponse } from '../../services/auth';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule
-  ],
+  imports: [CommonModule, FormsModule],
   templateUrl: './login.html',
-  styleUrl: './login.css'
+  styleUrl: './login.css',
 })
 export class Login {
-
   correo = '';
   password = '';
 
@@ -28,7 +24,6 @@ export class Login {
   ) {}
 
   login(): void {
-
     this.errorMessage = '';
 
     if (!this.correo || !this.password) {
@@ -38,27 +33,24 @@ export class Login {
 
     this.loading = true;
 
-    this.authService.login(this.correo, this.password)
-      .subscribe({
-        next: response => {
+    this.authService.login(this.correo, this.password).subscribe({
+      next: response => {
+        this.loading = false;
 
-          this.loading = false;
-
-          if (response.success) {
-            this.router.navigate(['/products']);
-          } else {
-            this.errorMessage = response.message;
-          }
-        },
-
-        error: error => {
-
-          this.loading = false;
-
-          console.error(error);
-
-          this.errorMessage = 'Correo o contraseña incorrectos.';
+        if (response.success) {
+          this.router.navigate(['/products']);
+        } else {
+          this.errorMessage = response.message;
         }
-      });
+      },
+
+      error: error => {
+        this.loading = false;
+
+        console.error(error);
+
+        this.errorMessage = 'Correo o contraseña incorrectos.';
+      },
+    });
   }
 }
