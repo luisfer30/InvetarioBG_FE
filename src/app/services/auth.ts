@@ -40,13 +40,13 @@ export class AuthService {
       );
   }
 
-  getToken(): string | null {
-    return localStorage.getItem('token');
-  }
+getToken(): string | null {
+  return localStorage.getItem('token');
+}
 
-  isAuthenticated(): boolean {
-    return !!this.getToken();
-  }
+isAuthenticated(): boolean {
+  return !!this.getToken();
+}
 
   logout(): void {
     localStorage.removeItem('token');
